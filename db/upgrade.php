@@ -482,6 +482,30 @@ function hvp_upgrade_2019030700() {
 }
 
 /**
+ * Adds raw score and max score to xapi results table
+ */
+function hvp_upgrade_2018053000() {
+    global $DB;
+    $dbman = $DB->get_manager();
+
+    $table = new xmldb_table('hvp_libraries_hub_cache_fr');
+
+    $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+    $table->add_field('machine_name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+    $table->add_field('title', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+    $table->add_field('summary', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+    $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+
+
+    $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+    // Conditionally create table for hvp_libraries_hub_cache.
+    if (!$dbman->table_exists($table)) {
+        $dbman->create_table($table);
+    }
+}
+
+/**
  * Hvp module upgrade function.
  *
  * @param string $oldversion The version we are upgrading from
