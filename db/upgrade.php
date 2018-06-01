@@ -484,8 +484,96 @@ function hvp_upgrade_2019030700() {
 /**
  * Adds raw score and max score to xapi results table
  */
-function hvp_upgrade_2018053000() {
+function hvp_upgrade_2018060100() {
     global $DB;
+
+    $translations = array(
+        'H5P.Audio' => array(
+            "sumary" => "Télachargez un enregistrement audio",
+            "description" => "Téléchargez un enregistrement audio en .mp3, .wav, .ogg ou fournissez le lien d'un enregistrement audio."
+        ),
+        'H5P.AudioRecorder' => array(
+            "title" => "Enregistrement audio",
+            "sumary" => "Créez un enregistrement audio",
+            "description" => "Un enregistreur audio HTML5. Enregistrez-vous et écoutez-vous ou téléchargez un fichier .wav de votre enregistrement."
+        ),
+        'H5P.CoursePresentation' => array(
+            "title" => "Présentation de cours",
+            "sumary" => "Créez une présentation avec un diaporama interactif",
+            "description" => "Les présentations de cours comprennent des diapositives qui incluent du multimédia, du texte et différents types d'interractions comme des résumés interactifs, des questions à choix multiple et des vidéos interactives. Les élèves peuvent découvrir de nouvelles méthodes d'apprentissage et tester leurs connaissances et leur mémoire. Comme toujours avec H5P, le contenu est éditable dans les navigateurs web et la présentation de cours inclue un outils de création WYSIWYG. Une utilisation typique de la présentation de cours consiste à présenter le sujet sur quelques diapositives et de les faire suivre par des diapositives qui permettront à l'usager de tester ses connaissances. La présentation de cours peut cependant être utilisée de plein de façons différentes, comme outil de présentation en classe ou comme un jeu en utilisant les boutons de navigation dans les diapositives pour permettre à l'utilisateur de faire des choix et d'en apprécier les conséquences",
+        ),
+        'H5P.Dialogcards' => array(
+            "title" => "Cartes de dialogue",
+            "sumary" => "Créez des cartes tournantes basées sur des textes",
+            "description" => "Les cartes de dialogue peuvent aider les apprenants à mémoriser des mots, des expressions ou des souvenirs. Sur le recto de la carte, il y a un indice correspondant à un mot ou une expression. En tournant la carte, l'apprenant révèle ce mot ou cette expression. Les cartes de dialogue peuvent être utilisées pour les langues, les mathématiques, l'histoire, etc...",
+        ),
+        'H5P.DragQuestion' => array(
+            "title" => "Glisser-Déposer",
+            "sumary" => "Créez des des glisser-déposer sur des images",
+            "description" => "Le glisser-déposer permet d'associer 2 éléments ou plus afin de réaliser visuellement des connexions logiques. Créez des exercices de glisser-déposer en utilisant du texte et/ou des images qui pourront être déplacés pour trouver la solution. Glisser-Déposer prend en charge les relations un à un, un à plusieurs, plusieurs à un et plusieurs à plusieurs entrer les questions et les réponses."
+        ),
+        'H5P.DragText' => array(
+            "title" => "Remplir les vides ",
+            "sumary" => "Créez des textes avec des mots manquant ",
+            "description" => "L'apprenant saisira les mots qui manquent dans un texte. Il saura si sa réponse est la bonne après chaque saisie ou après avoir saisi tous les mots, en fonction du paramétrage de l'exercice. Les auteurs saisissent le texte et marquent les mots à remplacer avec des astérisques. Les exercices créés peuvent être utilisés dans tous les domaines d'apprentissage : langues et grammaire, mathématiques, géographie, histoire, etc... "
+        ),
+        'H5P.ImageMultipleHotspotQuestion' => array(
+            "title" => "Hotspots Multiples",
+            "sumary" => "Créez plusieurs points que les utilisateurs devront trouver sur une image",
+            "description" => "Hotspots Multiples permet aux enseignants de créer un exercice basé sur une image. Les apprenants devront trouver, de façon très ludique, les points qui correspondent à la question posée."
+        ),
+        'H5P.ImageHotspotQuestion' => array(
+            "title" => "Hotspot",
+            "sumary" => "Créer un point sur une image que les utilisateurs devront retrouver",
+            "description" => "Hotspot  permet aux utilisateurs de répondre à une question en cliquant sur un élément d'une image. L'enseignant télécharge une image et définit différents points correspondant à des détails ou des sections de l'image. Les points peuvent être définis comme corrects ou incorrects, avec un commentaire approprié qui s'affiche lorsque l'apprenant clique dessus."
+        ),
+        'H5P.GuessTheAnswer' => array(
+            "title" => "Devinez la réponse",
+            "sumary" => "Créez une question et une réponse associées à une image",
+            "description" => "Ce type d'exercice permet aux enseignants de télécharger une image et d'y associer une question. Les apprenants peuvent deviner la réponse et appuyer sur un bouton pour vérifier que leur réponse est correcte. C'est un exercice qui permet d'effectuer des révisions."
+        ),
+        'H5P.ImageJuxtaposition' => array(
+            "title" => "Juxtaposition d'images",
+            "sumary" => "Comparez deux images de manière interactive",
+            "description" => "Juxtaposition d'images permet aux utilisateurs de comparer deux images de façon interactive, comme par exemple avant et après un événement."
+        ),
+        'H5P.ImageSlider' => array(
+            "title" => "Carrousel",
+            "sumary" => "Créez facilement un carrousel d'images",
+            "description" => "Présentez vos images facilement sous forme de carrousel (diaporama). L'enseignant télécharge des images et fournie des commentaires pour ces images. Les 2 images qui suivent l'image affichée sont préchargées de façon à fluidifier l'affichage. Le diaporama peut être affiché en plein écran ou dans une page pour laquelle le dimensionnement des images sera géré par le système. Les enseignants peuvent décider de gérer les proportions différemment."
+        ),
+        'H5P.InteractiveVideo' => array(
+            "title" => "Vidéo interactive",
+            "sumary" => "Créez des vidéos interactives",
+            "description" => "Ajoutez de l'interactivité à votre vidéo avec des explications, des images supplémentaires, des tableaux, des champs à remplir et des questions à choix multiple. Les questions peuvent permettre de passer à une autre partie de la vidéo en fonction de la réponse de l'utilisateur. Des résumés interactifs peuvent être ajoutés à la fin de la vidéo. Les vidéos interactives sont créées et modifiées depuis un navigateur standard."
+        ),
+        'H5P.MarkTheWords' => array(
+            "title" => "Marquez les mots",
+            "sumary" => "Créez un exercice où les utilisateurs mettent les mots en évidence",
+            "description" => "Marquez les mots permet aux apprenants de sélectionner les mots d'un texte qui répondent à une question posée. L'enseignant entre le texte et marque les mots que l'apprenant devra sélectionner (les bonnes réponses) en les entourant d'astérisques : *MotAMarquer*",
+        ),
+        'H5P.MemoryGame' => array(
+            "title" => "Jeu de mémoire",
+            "sumary" => "Créez un jeu d'association d'images",
+            "description" => "Créez vos propres jeux de mémoire et testez la mémoire de vos apprenants."
+        ),
+        'H5P.MultiChoice' => array(
+            "title" => "Choix multiple",
+            "sumary" => "Créez des questions à choix multiple flexibles",
+            "description" => "Choix multiple est un outil d'évaluation. L'apprenant évalue immédiatement le résultat. Chaque question peut avoir une ou plusieurs réponses correctes."
+        ),
+        'H5P.QuestionSet' => array(
+            "title" => "Quiz (ensemble de questions)",
+            "sumary" => "Créez une série de différents types de questions",
+            "description" => "Le quiz permet à l'apprenant de répondre à une série de questions présentées sous différentes formes tels que des questions  à choix multiple, des glisser-déposer, des remplissages de trous dans un texte. L'enseignant peut utiliser de nombreux paramètres pour régler le comportement du quiz. Il peut par exemple placer des images d'arrière plan, définir un pourcentage de réussite de l'apprenant, faire jouer une vidéo à la fin du quiz qui pourra être différente en fonction du résultat de l'apprenant."
+        ),
+        'H5P.Timeline' => array(
+            "title" => "Frise chronologique (Timeline)",
+            "sumary" => "Créez une chronologie d'événements alimentée de contenus multimédia",
+            "description" => "La Frise chronologique permet de placer une séquence d'événements dans un ordre chronologique. Pour chaque événements, l'enseignant peut ajouter des images. Il peut également inclure des objets provenant de Twitter, Youtube, Vimeo, Google Maps et SoundCloud. Cet outil est issu de Timeline.js, développé par Knight Lab."
+        ),
+    );
+
     $dbman = $DB->get_manager();
 
     $table = new xmldb_table('hvp_libraries_hub_cache_fr');
@@ -496,12 +584,30 @@ function hvp_upgrade_2018053000() {
     $table->add_field('summary', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
     $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
 
-
     $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
     // Conditionally create table for hvp_libraries_hub_cache.
     if (!$dbman->table_exists($table)) {
         $dbman->create_table($table);
+    }
+
+    $caches = $DB->get_records("hvp_libraries_hub_cache");
+
+    foreach ($caches as $cache) {
+        if (!$DB->record_exists('hvp_libraries_hub_cache_fr', array('machine_name' => $cache->machine_name))) {
+            $item = new stdClass();
+            $item->machine_name = $cache->machine_name;
+            $item->title = $cache->title;
+            $item->summary = $cache->summary;
+            $item->description = $cache->description;
+            if (isset($translations[$item->machine_name])) {
+                foreach ($translations[$item->machine_name] as $key => $value) {
+                    $item->$key = $value;
+                }
+            }
+
+            $DB->insert_record('hvp_libraries_hub_cache_fr', $item);
+        }
     }
 }
 
@@ -523,6 +629,7 @@ function xmldb_hvp_upgrade($oldversion) {
         2017040500,
         2017050900,
         2017060900,
+        2018060100,
         2018090300,
         2019022600,
         2019030700
