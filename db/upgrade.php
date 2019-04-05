@@ -350,8 +350,6 @@ function hvp_upgrade_2017060900()
 }
 
 /**
-<<<<<<< Updated upstream
-=======
  * Adds raw score and max score to xapi results table
  */
 function hvp_upgrade_2018060100()
@@ -483,7 +481,6 @@ function hvp_upgrade_2018060100()
 }
 
 /**
->>>>>>> Stashed changes
  * Hvp module upgrade function.
  *
  * @param string $oldversion The version we are upgrading from
