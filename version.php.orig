@@ -23,7 +23,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020081900;
+<<<<<<< HEAD
+$plugin->version   = 2020080400;
+=======
+$plugin->version   = 2018053000;
+>>>>>>> 0e0ae5d... Modification pour franciser le HUB
 $plugin->requires  = 2013051403;
 $plugin->cron      = 0;
 $plugin->component = 'mod_hvp';
