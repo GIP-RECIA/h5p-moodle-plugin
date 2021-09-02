@@ -891,6 +891,33 @@ class framework implements \H5PFrameworkInterface {
     public function getLibraryUsage($id, $skipcontent = false) {
         global $DB;
 
+        /*
+         * There may be direct circular dependencies between a content type and its
+         * editor that might lead to a library not being deletable. Check all
+         * editor dependencies for only having a dependency to the library itself.
+         * No check vice versa, because deleting the editor for a content type
+         * would still allow to choose the content from the H5P Hub with the editor
+         * widget then missing.
+         */
+        $editor_dependencies = $DB->get_fieldset_sql(
+            "SELECT required_library_id
+            FROM {hvp_libraries_libraries}
+            WHERE library_id = ? AND dependency_type = ?", array($id, 'editor')
+        );
+    
+        $hasCircularEditorDependency = array_reduce($editor_dependencies, function ($isCircle, $editor_library_id) use ($id, $DB) {
+          if ($isCircle) {
+            return TRUE; // Found already
+          }
+    
+          return (intval($DB->get_field_sql(
+            "SELECT COUNT(*)
+            FROM {hvp_libraries_libraries}
+            WHERE library_id = ? AND required_library_id = ? AND dependency_type = ?",
+            array(intval($editor_library_id), $id, 'preloaded')
+          )) === 1);
+        }, FALSE);
+
         if ($skipcontent) {
             $content = -1;
         } else {
@@ -912,6 +939,7 @@ class framework implements \H5PFrameworkInterface {
         return array(
             'content' => $content,
             'libraries' => $libraries,
+            'hasCircularEditorDepencendy' => $hasCircularEditorDependency,
         );
     }
 

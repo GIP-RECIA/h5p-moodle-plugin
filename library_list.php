@@ -98,6 +98,7 @@ foreach ($libraries as $versions) {
             'numContent' => $core->h5pF->getNumContent($library->id),
             'numContentDependencies' => $usage['content'] === -1 ? '' : $usage['content'],
             'numLibraryDependencies' => $usage['libraries'],
+            'hasCircularEditorDepencendy' => $usage['hasCircularEditorDepencendy'],
             'upgradeUrl' => $upgradeurl,
             'detailsUrl' => null, // Not implemented in Moodle.
             'deleteUrl' => $deleteurl
