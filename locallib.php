@@ -448,6 +448,13 @@ function hvp_delete_library($libraryid) {
     $core->h5pF->deleteLibrary($library);
     $core->fs->deleteLibrary($librarydata);
 
+    // Log library successfully deleted.
+    new \mod_hvp\event(
+        'library', 'delete',
+        null, null,
+        $library->machine_name, $library->major_version . '.' . $library->minor_version
+    );
+
     print get_string('deletelibrarydone', 'hvp');
     return;
 }
