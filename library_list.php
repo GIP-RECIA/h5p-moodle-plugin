@@ -87,6 +87,10 @@ foreach ($libraries as $versions) {
             $restrictedurl = null;
         }
 
+        $deleteurl = (new moodle_url('/mod/hvp/delete_library_page.php', array(
+            'library_id' => $library->id
+        )))->out(false);
+
         $settings['libraryList']['listData'][] = array(
             'title' => $library->title . ' (' . \H5PCore::libraryVersion($library) . ')',
             'restricted' => $restricted,
@@ -96,7 +100,7 @@ foreach ($libraries as $versions) {
             'numLibraryDependencies' => $usage['libraries'],
             'upgradeUrl' => $upgradeurl,
             'detailsUrl' => null, // Not implemented in Moodle.
-            'deleteUrl' => null // Not implemented in Moodle.
+            'deleteUrl' => $deleteurl
         );
 
         $i++;
