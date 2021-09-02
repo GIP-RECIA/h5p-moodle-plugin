@@ -408,7 +408,14 @@ function hvp_content_upgrade_progress($libraryid) {
  */
 function hvp_delete_library($libraryid) {
     global $DB;
-    
+
+    // Check permissions
+    $context = \context_system::instance();
+    if (!has_capability('mod/hvp:deletelibraries', $context)) {
+        print get_string('nopermissiontodelete', 'hvp');
+        return;
+    }
+
     // Verify security token.
     if (!\H5PCore::validToken('deletelibrary', required_param('token', PARAM_RAW))) {
         print get_string('deletelibraryinvalidtoken', 'hvp');

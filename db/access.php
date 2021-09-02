@@ -163,6 +163,14 @@ $capabilities = array(
         )
     ),
 
+    'mod/hvp:deletelibraries' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        )
+    ),
+
     'mod/hvp:getcachedassets' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
