@@ -52,8 +52,7 @@ echo $OUTPUT->header();
 
 // On form submit.
 if ($data && $libraryid === $data->library_id) {
-    // TODO: write this function to delete lib
-    //hvp_delete_library($libraryid);
+    hvp_delete_library($libraryid);
 } else {
     $deletelibraryform->display();
 }
