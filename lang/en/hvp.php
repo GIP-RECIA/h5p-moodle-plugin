@@ -170,10 +170,14 @@ $string['upgradeerrornotsupported'] = 'Parameters contain %used which is not sup
 // Delete H5P library page.
 $string['deletelibrary'] = 'Delete library';
 $string['deletelibraryheading'] = 'Delete {$a} library';
+$string['deletelibraryerrorused'] = 'This Library is used by content or other libraries and can therefore not be deleted.';
 $string['deletelibrarydescription'] = 'Are you sure you wish to delete this H5P library?';
 $string['deletelibrarybuttonlabel'] = 'Yes, delete library';
+$string['deletelibrarydone'] = 'You have successfully deleted library.';
 $string['deletelibraryreturn'] = 'Return';
 $string['deletelibraryunknown'] = 'unknown';
+$string['deletelibrarymissing'] = 'Error: Your library is missing!';
+$string['deletelibraryinvalidtoken'] = 'Error: Invalid security token!';
 
 // Results / report page.
 $string['user'] = 'User';

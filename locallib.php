@@ -401,6 +401,58 @@ function hvp_content_upgrade_progress($libraryid) {
 }
 
 /**
+ * Handle delete library
+ *
+ * @method hvp_delete_library
+ * @param  int  $library_id
+ */
+function hvp_delete_library($libraryid) {
+    global $DB;
+    
+    // Verify security token.
+    if (!\H5PCore::validToken('deletelibrary', required_param('token', PARAM_RAW))) {
+        print get_string('deletelibraryinvalidtoken', 'hvp');
+        return;
+    }
+
+    // Get the library we're deleting.
+    $library = $DB->get_record('hvp_libraries', array(
+        'id' => $libraryid
+    ));
+    if (!$library) {
+        print get_string('deletelibrarymissing', 'hvp');
+        return;
+    }
+
+    $core = \mod_hvp\framework::instance();
+    $usage = $core->h5pF->getLibraryUsage($libraryid);
+    
+    if ($usage['content'] !== 0 || $usage['libraries'] !== 0) {
+        print get_string('deletelibraryerrorused', 'hvp');
+        return;
+    }
+
+    $librarydata = array(
+        'machineName' => $library->machine_name,
+        'majorVersion' => $library->major_version,
+        'minorVersion' => $library->minor_version
+    );
+
+    // Remove cached assets that uses this library
+    if ($core->aggregateAssets) {
+        $removedKeys = $core->h5pF->deleteCachedAssets($libraryid);
+        $core->fs->deleteCachedAssets($removedKeys);
+    }
+
+    // Remove library
+    $core->h5pF->deleteLibrary($library);
+    $core->fs->deleteLibrary($librarydata);
+
+    print get_string('deletelibrarydone', 'hvp');
+    return;
+}
+
+/**
  * Gets the information needed when content is upgraded
  *
  * @method hvp_get_library_upgrade_info
