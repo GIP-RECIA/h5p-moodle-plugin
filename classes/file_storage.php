@@ -65,6 +65,21 @@ class file_storage implements \H5PFileStorage {
     }
 
     /**
+     * Delete the library folder.
+     *
+     * @param array $library
+     *  Library properties
+     */
+    // @codingStandardsIgnoreLine
+    public function deleteLibrary($library) {
+        // Libraries are stored in a system context.
+        $context = \context_system::instance();
+
+        // Remove any old existing library files.
+        self::deleteFileTree($context->id, 'libraries', '/' . \H5PCore::libraryToString($library, true) . '/');
+    }
+
+    /**
      * Store the content folder.
      *
      * @param string $source

@@ -167,6 +167,18 @@ $string['upgradeerrormissinglibrary'] = 'Missing required library %lib.';
 $string['upgradeerrortoohighversion'] = 'Parameters contain %used while only %supported or earlier are supported.';
 $string['upgradeerrornotsupported'] = 'Parameters contain %used which is not supported.';
 
+// Delete H5P library page.
+$string['deletelibrary'] = 'Delete library';
+$string['deletelibraryheading'] = 'Delete {$a} library';
+$string['deletelibraryerrorused'] = 'This Library is used by content or other libraries and can therefore not be deleted.';
+$string['deletelibrarydescription'] = 'Are you sure you wish to delete this H5P library?';
+$string['deletelibrarybuttonlabel'] = 'Yes, delete library';
+$string['deletelibrarydone'] = 'You have successfully deleted library.';
+$string['deletelibraryreturn'] = 'Return';
+$string['deletelibraryunknown'] = 'unknown';
+$string['deletelibrarymissing'] = 'Error: Your library is missing!';
+$string['deletelibraryinvalidtoken'] = 'Error: Invalid security token!';
+
 // Results / report page.
 $string['user'] = 'User';
 $string['score'] = 'Score';
@@ -223,6 +235,7 @@ $string['hvp:viewallresults'] = 'View all results for completed H5P activites';
 $string['hvp:restrictlibraries'] = 'Restrict access to certain H5P content types';
 $string['hvp:userestrictedlibraries'] = 'Use restricted H5P content types';
 $string['hvp:updatelibraries'] = 'Install new H5P content types or update existing ones';
+$string['hvp:deletelibraries'] = 'Delete H5P libraries';
 $string['hvp:getcachedassets'] = 'Required for viewing H5P activities';
 $string['hvp:installrecommendedh5plibraries'] = 'Install new safe H5P content types recommended by H5P.org';
 $string['hvp:emailconfirmsubmission'] = 'Get a confirmation message when submitting';
@@ -233,6 +246,7 @@ $string['hvp:share'] = 'Share content on the H5P OER Hub';
 // Capabilities error messages.
 $string['nopermissiontogettranslations'] = 'You do not have permissions to retrieve translations';
 $string['nopermissiontoupgrade'] = 'You do not have permission to upgrade libraries.';
+$string['nopermissiontodelete'] = 'You do not have permission to delete libraries.';
 $string['nopermissiontorestrict'] = 'You do not have permission to restrict libraries.';
 $string['nopermissiontosavecontentuserdata'] = 'You do not have permission to save content user data.';
 $string['nopermissiontosaveresult'] = 'You do not have permission to save result for this content.';
