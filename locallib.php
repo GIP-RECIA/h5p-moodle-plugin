@@ -433,8 +433,9 @@ function hvp_delete_library($libraryid) {
 
     $core = \mod_hvp\framework::instance();
     $usage = $core->h5pF->getLibraryUsage($libraryid);
-    
-    if ($usage['content'] !== 0 || $usage['libraries'] !== 0) {
+    $delete_circular_editor_dependency = $usage['hasCircularEditorDepencendy'] && $usage['content'] === 0 && $usage['libraries'] === 1;
+
+    if (!$delete_circular_editor_dependency && ($usage['content'] !== 0 || $usage['libraries'] !== 0)) {
         print get_string('deletelibraryerrorused', 'hvp');
         return;
     }
