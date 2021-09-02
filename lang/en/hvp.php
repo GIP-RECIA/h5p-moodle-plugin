@@ -167,6 +167,14 @@ $string['upgradeerrormissinglibrary'] = 'Missing required library %lib.';
 $string['upgradeerrortoohighversion'] = 'Parameters contain %used while only %supported or earlier are supported.';
 $string['upgradeerrornotsupported'] = 'Parameters contain %used which is not supported.';
 
+// Delete H5P library page.
+$string['deletelibrary'] = 'Delete library';
+$string['deletelibraryheading'] = 'Delete {$a} library';
+$string['deletelibrarydescription'] = 'Are you sure you wish to delete this H5P library?';
+$string['deletelibrarybuttonlabel'] = 'Yes, delete library';
+$string['deletelibraryreturn'] = 'Return';
+$string['deletelibraryunknown'] = 'unknown';
+
 // Results / report page.
 $string['user'] = 'User';
 $string['score'] = 'Score';
