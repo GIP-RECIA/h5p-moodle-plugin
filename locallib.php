@@ -444,12 +444,12 @@ function hvp_delete_library($libraryid) {
                  JOIN {course_modules} cm ON cm.instance = m.id
                  JOIN {modules} md ON md.id = cm.module
                  JOIN {course} c ON c.id = m.course
-            WHERE cl.id = ? AND md.name = 'hvp'", array($libraryid)
+            WHERE cl.library_id = ? AND md.name = 'hvp'", array($libraryid)
         );
 
         foreach ($libraryUsageContent as $content) {
-            print '<br> <a href="' . (new moodle_url('/mod/hvp/view.php?id='.$content->id))->out(false) . '">'
-                . $content->course_name . ' - ' . $content->hvp_name . '</a>';
+            print '<a href="' . (new moodle_url('/mod/hvp/view.php?id='.$content->id))->out(false) . '">'
+                . $content->course_name . ' - ' . $content->hvp_name . '</a> <br>';
         }
 
         return;
