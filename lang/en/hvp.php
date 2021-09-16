@@ -171,6 +171,7 @@ $string['upgradeerrornotsupported'] = 'Parameters contain %used which is not sup
 $string['deletelibrary'] = 'Delete library';
 $string['deletelibraryheading'] = 'Delete {$a} library';
 $string['deletelibraryerrorused'] = 'This Library is used by content or other libraries and can therefore not be deleted.';
+$string['deletelibraryhavetoberefreshed'] = 'This Library is used by {$a} contents which have not been refreshed and can therefore not be deleted. To refresh a content, just display it. Here is the list of contents to refresh :';
 $string['deletelibrarydescription'] = 'Are you sure you wish to delete this H5P library?';
 $string['deletelibrarybuttonlabel'] = 'Yes, delete library';
 $string['deletelibrarydone'] = 'You have successfully deleted library.';

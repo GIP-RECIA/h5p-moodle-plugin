@@ -435,7 +435,25 @@ function hvp_delete_library($libraryid) {
     $usage = $core->h5pF->getLibraryUsage($libraryid);
     $delete_circular_editor_dependency = $usage['hasCircularEditorDepencendy'] && $usage['content'] === 0 && $usage['libraries'] === 1;
 
-    if (!$delete_circular_editor_dependency && ($usage['content'] !== 0 || $usage['libraries'] !== 0)) {
+    if ($usage['content'] > 0) {
+        print get_string('deletelibraryhavetoberefreshed', 'hvp', $usage['content']).'<br>';
+        $libraryUsageContent = $DB->get_records_sql(
+            "SELECT cm.id, m.name as hvp_name, c.fullname as course_name
+            FROM {hvp_contents_libraries} cl
+                 JOIN {hvp} m ON m.id = cl.hvp_id
+                 JOIN {course_modules} cm ON cm.instance = m.id
+                 JOIN {modules} md ON md.id = cm.module
+                 JOIN {course} c ON c.id = m.course
+            WHERE cl.id = ? AND md.name = 'hvp'", array($library_id)
+        );
+
+        foreach ($libraryUsageContent as $content) {
+            print '<br> <a href="' . (new moodle_url('/mod/hvp/view.php?id='.$content->id))->out(false) . '">'
+                . $content->course_name . ' - ' . $content->hvp_name . '</a>';
+        }
+
+        return;
+    } elseif (!$delete_circular_editor_dependency && ($usage['content'] !== 0 || $usage['libraries'] !== 0)) {
         print get_string('deletelibraryerrorused', 'hvp');
         return;
     }
