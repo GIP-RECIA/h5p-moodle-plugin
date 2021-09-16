@@ -444,7 +444,7 @@ function hvp_delete_library($libraryid) {
                  JOIN {course_modules} cm ON cm.instance = m.id
                  JOIN {modules} md ON md.id = cm.module
                  JOIN {course} c ON c.id = m.course
-            WHERE cl.id = ? AND md.name = 'hvp'", array($library_id)
+            WHERE cl.library_id = ? AND md.name = 'hvp'", array($libraryid)
         );
 
         foreach ($libraryUsageContent as $content) {
