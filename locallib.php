@@ -448,8 +448,8 @@ function hvp_delete_library($libraryid) {
         );
 
         foreach ($libraryUsageContent as $content) {
-            print '<br> <a href="' . (new moodle_url('/mod/hvp/view.php?id='.$content->id))->out(false) . '">'
-                . $content->course_name . ' - ' . $content->hvp_name . '</a>';
+            print '<a href="' . (new moodle_url('/mod/hvp/view.php?id='.$content->id))->out(false) . '">'
+                . $content->course_name . ' - ' . $content->hvp_name . '</a> <br>';
         }
 
         return;
