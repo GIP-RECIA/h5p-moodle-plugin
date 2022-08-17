@@ -1112,8 +1112,8 @@ class framework implements \H5PFrameworkInterface {
         global $DB;
 
         // Delete library files.
-        $librarybase = $this->getH5pPath() . '/libraries/';
-        $libname = "{$library->name}-{$library->major_version}.{$library->minor_version}";
+        //$librarybase = $this->getH5pPath() . '/libraries/';
+        //$libname = "{$library->name}-{$library->major_version}.{$library->minor_version}";
         //\H5PCore::deleteFileTree("{$librarybase}{$libname}");
 
         // Remove library data from database.
