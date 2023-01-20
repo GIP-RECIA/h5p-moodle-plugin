@@ -897,9 +897,4 @@ class file_storage implements \H5PFileStorage {
         // Store in local storage folder.
         return file_put_contents($filepath, $stream);
     }
-
-    // @codingStandardIgnoreLine
-    public function deleteLibrary($library) {
-        // TODO: Implement deleteLibrary() method.
-    }
 }
