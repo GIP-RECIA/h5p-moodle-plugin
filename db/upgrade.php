@@ -955,6 +955,66 @@ Notez qu'il est facile pour les utilisateurs avertis de révéler immédiatement
 }
 
 /**
+ * Ajout de nouvelles traductions
+ */
+function hvp_upgrade_2023012500()
+{
+    global $DB;
+
+    $translations = array(
+        'H5P.Crossword' => array(
+            "title" => "Mots croisés",
+            "summary" => "Créez une grille de mots croisés",
+            "description" => "Construisez et personnalisez de beaux mots croisés pour engager votre public. Les mots croisés sont hautement personnalisables, ce qui vous permet de configurer toutes les couleurs, de télécharger une image de fond, de décider de la façon dont les scores doivent être attribués et même de rendre les mots aléatoires afin que votre public obtienne une nouvelle grille à chaque fois si vous le souhaitez.",
+        ),
+        'H5P.SortParagraphs' => array(
+            "title" => "Trier les paragraphes",
+            "summary" => "Créez un ensemble de paragraphes à trier",
+            "description" => "Tapez ou collez une liste de paragraphes qui seront randomisés. Vous pouvez par exemple faire en sorte que chaque paragraphe soit une partie d'une chanson, un bloc de code ou les étapes d'une recette. Les apprenants doivent classer les paragraphes dans l'ordre correct. Par défaut, les apprenants obtiendront un point pour chaque paragraphe qui suit le paragraphe qu'il est censé suivre, mais vous pouvez décider d'accorder un point pour chaque paragraphe qui se trouve à la bonne place.",
+        ),
+        'H5P.MultiMediaChoice' => array(
+            "title" => "Choix de l'image",
+            "summary" => "Créez une tâche où les choix sont des images",
+            "description" => "Créez de superbes questions à choix multiple ou unique où les choix sont des images. Vous pouvez personnaliser la mise en page des choix et choisir entre des ratios d'images fixes ou simplement utiliser les ratios que les images ont déjà.",
+        ),
+        'H5P.Cornell' => array(
+            "title" => "Notes de Cornell",
+            "summary" => "Prendre des notes en utilisant le système Cornell",
+            "description" => "Présentez aux apprenants une vidéo, un texte ou un document audio et encouragez-les à prendre des notes à l'aide du système de prise de notes Cornell.",
+        ),
+        'H5P.ARScavenger' => array(
+            "title" => "AR Scavenger",
+            "summary" => "Le plaisir de la réalité augmentée !",
+            "description" => "Laissez les apprenants explorer la réalité augmentée avec des modèles 3D ou des exercices H5P. Vous pouvez définir des marqueurs semblables à des codes QR que vos élèves peuvent scanner avec l'appareil photo de leur appareil. Ces marqueurs peuvent déclencher le mélange d'un modèle 3D de votre choix avec la vue de la caméra, ou ils peuvent afficher une interaction H5P.",
+        ),
+        'H5P.StructureStrip' => array(
+            "title" => "Bande de structure",
+            "summary" => "Bande de structure interactive",
+            "description" => "Une bande de structure est traditionnellement placée à côté d'une feuille de papier (ou même collée dessus). Elle fournit aux élèves un échafaudage pour un texte et les aide à maintenir les longueurs des différents segments de texte dans de bonnes proportions. Avec la bande de structure, vous pouvez maintenant utiliser la même approche dans H5P sans papier.",
+        ),
+    );
+
+    $caches = $DB->get_records("hvp_libraries_hub_cache");
+
+    foreach ($caches as $cache) {
+        if (!$DB->record_exists('hvp_libraries_hub_cache_fr', array('machine_name' => $cache->machine_name))) {
+            $item = new stdClass();
+            $item->machine_name = $cache->machine_name;
+            $item->title = $cache->title;
+            $item->summary = $cache->summary;
+            $item->description = $cache->description;
+            if (isset($translations[$item->machine_name])) {
+                foreach ($translations[$item->machine_name] as $key => $value) {
+                    $item->$key = $value;
+                }
+            }
+
+            $DB->insert_record('hvp_libraries_hub_cache_fr', $item);
+        }
+    }
+}
+
+/**
  * Hvp module upgrade function.
  *
  * @param string $oldversion The version we are upgrading from
@@ -982,6 +1042,7 @@ function xmldb_hvp_upgrade($oldversion) {
         2020091500,
         2020112600,
         2021060400,
+        2023012500,
     ];
 
     foreach ($upgrades as $version) {
