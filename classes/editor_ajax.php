@@ -96,7 +96,21 @@ class editor_ajax implements \H5PEditorAjaxInterface {
             );
         }
 
-        return $DB->get_records_sql("SELECT en.id,en.machine_name,en.major_version,en.minor_version,en.patch_version,en.h5p_major_version,en.h5p_minor_version,fr.title,fr.summary,fr.description,en.icon,en.created_at,en.updated_at,en.is_recommended,en.popularity,en.screenshots,en.license,en.example,en.tutorial,en.keywords,en.categories,en.owner from {hvp_libraries_hub_cache} en, {hvp_libraries_hub_cache_fr} fr WHERE en.machine_name = fr.machine_name");
+        return $DB->get_records_sql("
+            SELECT en.id, en.machine_name,
+                en.major_version, en.minor_version, en.patch_version,
+                en.h5p_major_version, en.h5p_minor_version,
+                CASE WHEN fr.title IS NULL THEN en.title ELSE fr.title END as title,
+                CASE WHEN fr.summary IS NULL THEN en.summary ELSE fr.summary END as summary,
+                CASE WHEN fr.description IS NULL THEN en.description ELSE fr.description END as description,
+                en.icon, en.created_at, en.updated_at, en.is_recommended,
+                en.popularity, en.screenshots, en.license, en.example,
+                en.tutorial, en.keywords, en.categories, en.owner
+            FROM
+                {hvp_libraries_hub_cache} en
+            LEFT JOIN
+                {hvp_libraries_hub_cache_fr} fr ON en.machine_name = fr.machine_name;"
+        );
     }
 
     /**
