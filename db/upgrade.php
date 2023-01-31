@@ -697,6 +697,32 @@ function hvp_upgrade_2020112600() {
 }
 
 /**
+ * Ajoute les traductions fr
+ */
+function add_fr_translations($translations) {
+    global $DB;
+
+    $caches = $DB->get_records("hvp_libraries_hub_cache");
+
+    foreach ($caches as $cache) {
+        if (!$DB->record_exists('hvp_libraries_hub_cache_fr', array('machine_name' => $cache->machine_name))) {
+            $item = new stdClass();
+            $item->machine_name = $cache->machine_name;
+            $item->title = $cache->title;
+            $item->summary = $cache->summary;
+            $item->description = $cache->description;
+            if (isset($translations[$item->machine_name])) {
+                foreach ($translations[$item->machine_name] as $key => $value) {
+                    $item->$key = $value;
+                }
+            }
+
+            $DB->insert_record('hvp_libraries_hub_cache_fr', $item);
+        }
+    }
+}
+
+/**
  * Correction des anciennes traductions et ajout de nouvelles
  */
 function hvp_upgrade_2021060400()
@@ -933,25 +959,10 @@ Notez qu'il est facile pour les utilisateurs avertis de révéler immédiatement
         ),
     );
 
+    // On supprime toutes les traductions fr car on repart a zeros
     $DB->delete_records('hvp_libraries_hub_cache_fr');
-    $caches = $DB->get_records("hvp_libraries_hub_cache");
 
-    foreach ($caches as $cache) {
-        if (!$DB->record_exists('hvp_libraries_hub_cache_fr', array('machine_name' => $cache->machine_name))) {
-            $item = new stdClass();
-            $item->machine_name = $cache->machine_name;
-            $item->title = $cache->title;
-            $item->summary = $cache->summary;
-            $item->description = $cache->description;
-            if (isset($translations[$item->machine_name])) {
-                foreach ($translations[$item->machine_name] as $key => $value) {
-                    $item->$key = $value;
-                }
-            }
-
-            $DB->insert_record('hvp_libraries_hub_cache_fr', $item);
-        }
-    }
+    add_fr_translations($translations);
 }
 
 /**
@@ -994,24 +1005,25 @@ function hvp_upgrade_2023012500()
         ),
     );
 
-    $caches = $DB->get_records("hvp_libraries_hub_cache");
+    add_fr_translations($translations);
+}
 
-    foreach ($caches as $cache) {
-        if (!$DB->record_exists('hvp_libraries_hub_cache_fr', array('machine_name' => $cache->machine_name))) {
-            $item = new stdClass();
-            $item->machine_name = $cache->machine_name;
-            $item->title = $cache->title;
-            $item->summary = $cache->summary;
-            $item->description = $cache->description;
-            if (isset($translations[$item->machine_name])) {
-                foreach ($translations[$item->machine_name] as $key => $value) {
-                    $item->$key = $value;
-                }
-            }
+/**
+ * Ajout d'une nouvelle traduction
+ */
+function hvp_upgrade_2023013100()
+{
+    global $DB;
 
-            $DB->insert_record('hvp_libraries_hub_cache_fr', $item);
-        }
-    }
+    $translations = array(
+        'H5P.InfoWall' => array(
+            "title" => "Mur d'information",
+            "summary" => "Créez des panneaux d'informations que les utilisateurs peuvent filtrer par mots-clés pertinents.",
+            "description" => "Permettez aux utilisateurs de parcourir facilement toutes les informations ou de les filtrer par mots-clés afin de rechercher des informations spécifiques. En tant qu'auteur, vous pouvez configurer un panneau maître et décider d'ajouter une image par panneau, etc.",
+        ),
+    );
+
+    add_fr_translations($translations);
 }
 
 /**
@@ -1043,6 +1055,7 @@ function xmldb_hvp_upgrade($oldversion) {
         2020112600,
         2021060400,
         2023012500,
+        2023013100,
     ];
 
     foreach ($upgrades as $version) {
