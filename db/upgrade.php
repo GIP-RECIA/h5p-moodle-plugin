@@ -1027,6 +1027,24 @@ function hvp_upgrade_2023013100()
 }
 
 /**
+ * Ajout d'une nouvelle traduction
+ */
+function hvp_upgrade_2023122500()
+{
+    global $DB;
+
+    $translations = array(
+        'H5P.GameMap' => array(
+            "title" => "Carte de jeu",
+            "summary" => "Laissez vos étudiants choisir leurs exercices sur une carte de jeu.",
+            "description" => "Une carte de jeu est constituée de scènes que vous pouvez disposer sur une image de fond. Chaque étape est connectée à une ou plusieurs étapes et peut contenir un type de contenu H5P que l'utilisateur peut visualiser ou compléter. Vous pouvez définir des règles qui détermineront vers quelle étape l'utilisateur est autorisé à se déplacer, afin de créer une expérience similaire à un jeu.",
+        ),
+    );
+
+    add_fr_translations($translations);
+}
+
+/**
  * Hvp module upgrade function.
  *
  * @param string $oldversion The version we are upgrading from
@@ -1056,6 +1074,7 @@ function xmldb_hvp_upgrade($oldversion) {
         2021060400,
         2023012500,
         2023013100,
+        2023122500,
     ];
 
     foreach ($upgrades as $version) {
