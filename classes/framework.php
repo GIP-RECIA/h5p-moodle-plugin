@@ -1541,6 +1541,10 @@ class framework implements \H5PFrameworkInterface {
             'minor_version' => $minorversion
         ));
 
+        if (!$library) {
+            return false;
+        }
+
         $librarydata = array(
             'libraryId' => $library->id,
             'machineName' => $library->machine_name,
@@ -1944,5 +1948,16 @@ class framework implements \H5PFrameworkInterface {
     public function setContentHubMetadataChecked($time, $lang = 'en') {
         global $DB;
         $DB->execute("UPDATE {hvp_content_hub_cache} SET last_checked = ? WHERE language = ?", array($time, $lang));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    // @codingStandardsIgnoreLine
+    public function resetHubOrganizationData() {
+        global $DB;
+
+        set_config('hub_secret', '', 'mod_hvp');
+        $DB->execute("UPDATE {hvp} SET hub_id = NULL, synced = NULL, shared = 0");
     }
 }
