@@ -1039,7 +1039,7 @@ function hvp_upgrade_2023013100()
 /**
  * Recrée la table hvp_libraries_hub_cache_fr et réinjecte toutes les traductions
  */
-function hvp_upgrade_2026071000() {
+function hvp_upgrade_2026062501() {
     global $DB;
     $dbman = $DB->get_manager();
 
@@ -1365,7 +1365,7 @@ function xmldb_hvp_upgrade($oldversion) {
         2023012500,
         2023013100,
         2026050600,
-        2026071000,
+        2026062501,
     ];
 
     foreach ($upgrades as $version) {
