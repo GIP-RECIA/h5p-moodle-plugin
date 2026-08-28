@@ -181,6 +181,7 @@ function hvp_add_editor_assets($id = null, $mformid = null) {
     $PAGE->requires->js(new moodle_url('/mod/hvp/editor/scripts/h5peditor-editor.js' . $cachebuster), true);
     $PAGE->requires->js(new moodle_url('/mod/hvp/editor/scripts/h5peditor-init.js' . $cachebuster), true);
     $PAGE->requires->js(new moodle_url('/mod/hvp/editor.js' . $cachebuster), true);
+    $PAGE->requires->css(new moodle_url('/mod/hvp/editor.css' . $cachebuster), true);
 
     // Add translations.
     $language = \mod_hvp\framework::get_language();
@@ -261,6 +262,7 @@ function hvp_admin_add_generic_css_and_js($page, $liburl, $settings = null) {
         'deleteLibrary' => '',
         'upgradeLibrary' => get_string('upgradelibrarycontent', 'hvp')
     );
+    $settings['extraTableClasses'] = 'table-reboot';
 
     $page->requires->data_for_js('H5PAdminIntegration', $settings, true);
     $page->requires->css(new moodle_url($liburl . 'styles/h5p.css' . hvp_get_cache_buster()));
@@ -372,9 +374,10 @@ function hvp_content_upgrade_progress($libraryid) {
     } else {
         $out->skipped = array();
     }
+    $lastid = optional_param('lastId', 0, PARAM_INT);
 
     // Get number of contents for this library.
-    $out->left = $interface->getNumContent($libraryid, $skipped);
+    $out->left = $interface->getNumContent($libraryid, $skipped, $lastid);
 
     if ($out->left) {
         $skipquery = empty($skipped) ? '' : " AND id NOT IN ($skipped)";
@@ -386,8 +389,9 @@ function hvp_content_upgrade_progress($libraryid) {
                     a11y_title
                FROM {hvp}
               WHERE main_library_id = ?
+                AND id > ?
                     {$skipquery}
-           ORDER BY name ASC", array($libraryid), 0 , 40
+           ORDER BY id ASC", array($libraryid, $lastid), 0 , 40
         );
 
         foreach ($results as $content) {
@@ -511,6 +515,7 @@ function hvp_get_library_upgrade_info($name, $major, $minor) {
         $basepath = \mod_hvp\view_assets::getsiteroot() . '/';
         $response->upgradesScript = "{$basepath}pluginfile.php/{$context->id}/mod_hvp/libraries/{$libraryfoldername}/upgrades.js";
     }
+    $response->semantics = $core->loadLibrarySemantics($name, $major, $minor);
 
     return $response;
 }
